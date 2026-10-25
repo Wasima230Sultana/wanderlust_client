@@ -9,6 +9,7 @@ import { cn } from "cn";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Destinations", href: "/destinations" },
+    { label: "Add Destinations", href: "/add-destination" },
   { label: "My Bookings", href: "/my-bookings" },
   { label: "Admin", href: "/admin" },
 ];

@@ -40,7 +40,7 @@ Typecheck gotchas:
 ## UI stack — shadcn "base-nova" + Tailwind v4
 
 - shadcn components are built on `@base-ui/react` (Base UI), **not Radix**. Add components with `npx shadcn add <component>` (config: `components.json`); don't hand-write Radix-style APIs.
-- `cn` comes from the `cn` npm package — import it from `"cn"` directly (`src/lib/utils.ts` only re-exports it). There is no clsx/tailwind-merge setup.
+- `cn` comes from the `cn` npm package — import it from `"cn"` directly (`src/lib/utils.ts` only re-exports it). There is no separate clsx/tailwind-merge setup: `cn` itself does tailwind-style merging, so `className` overrides on shadcn components reliably win over the component's base classes.
 - Tailwind v4 is CSS-first: no `tailwind.config.*` or `postcss.config.*` file. `src/app/globals.css` holds the imports (`tailwindcss`, `tw-animate-css`, `shadcn/tailwind.css`), theme tokens — including the custom `--color-brand` used as `bg-brand` — the class-based `.dark` variant, and oklch CSS variables; the `*.css` Turbopack loader is wired in `next.config.ts`.
 
 ## Layout
@@ -52,5 +52,7 @@ Typecheck gotchas:
 
 - The API server is at `../wonderlast-resources-server` — one level up from the repo root, and the folder name really is misspelled ("wonderlast").
 - Express 5 (ESM, `"type": "module"`) + MongoDB Atlas. Run it with `npm start` (→ `node index.js`); it listens on port `8000` and connects to Atlas on startup (`MONGODB_URL` in its `.env`, `PORT` optional) — it exits if the connection fails.
-- `POST /add-destination` is the only data route: JSON body, validates required fields (returns 400 listing the missing ones), inserts into db `wanderlust_resources`, collection `destination`, returns 201 `{ success, destination }`. CORS headers are open (needed: the client runs on :3000).
+- Data routes: `GET /destinations` (all docs, newest first → `{ success, destinations }`) and `POST /add-destination` (validates required fields, returns 400 listing missing ones; inserts into db `wanderlust_resources`, collection `destination`, returns 201 `{ success, destination }`). CORS headers are open (needed: the client runs on :3000).
+- `src/app/destinations/page.tsx` fetches that GET route client-side (loading skeletons, error + retry, empty state) and filters/sorts in memory. `src/lib/api.ts` holds `apiBase` (`NEXT_PUBLIC_API_URL` ?? `http://localhost:8000`) and `fetchDestinations()` — start the server to see data, otherwise the page shows its error state.
+- `next.config.ts` allows **any https host** in `images.remotePatterns` because `imageUrl` values are user-entered — `next/image` on `/destinations` needs this; don't narrow it to one host without handling the form too.
 - The form in `src/app/add-destination/page.tsx` is **not wired to it yet** (client-side only: validate → success notice → reset). When wiring it up, POST to `${NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/add-destination`.

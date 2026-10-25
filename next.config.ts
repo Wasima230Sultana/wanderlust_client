@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   experimental: {
     agentFeedback: true,
   },
+  images: {
+    // Destination image URLs are user-entered, so allow any https host.
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
+  },
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,
