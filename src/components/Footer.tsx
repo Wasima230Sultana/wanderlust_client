@@ -64,12 +64,12 @@ export default function Footer() {
               Subscribe for exclusive travel deals and inspiration.
             </p>
             <div className="mt-4 flex items-center gap-2 rounded-md border border-zinc-700 bg-zinc-900 p-1.5">
-              <input
+              {/* <input
                 type="email"
                 placeholder="Enter email"
                 aria-label="Email address"
                 className="w-full min-w-0 bg-transparent px-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none"
-              />
+              /> */}
               <button
                 type="button"
                 aria-label="Subscribe"

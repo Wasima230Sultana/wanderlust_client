@@ -3,6 +3,7 @@ import { ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Destination } from "@/lib/api";
+import Link from "next/link";
 
 function DestinationCard({ destination }: { destination: Destination }) {
   const rating =
@@ -46,7 +47,8 @@ function DestinationCard({ destination }: { destination: Destination }) {
           </p>
         </div>
         <p className="text-xs text-muted-foreground">{destination.duration}</p>
-        <Button
+        <Link href={`/destinations/${destination._id}`}>
+         <Button
           type="button"
           size="sm"
           className="mt-2 w-fit rounded-md bg-brand text-xs font-semibold tracking-wider text-white uppercase hover:bg-brand/90"
@@ -54,6 +56,8 @@ function DestinationCard({ destination }: { destination: Destination }) {
           Book Now
           <ArrowRight aria-hidden="true" />
         </Button>
+        </Link>
+       
       </CardContent>
     </Card>
   );

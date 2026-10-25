@@ -9,8 +9,8 @@ const nextConfig: NextConfig = {
     // Destination image URLs are user-entered, so allow any https host.
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
-  cacheComponents: true,
-  partialPrefetching: true,
+  cacheComponents: false,
+  partialPrefetching: false,
   reactCompiler: true,
   turbopack: {
     rules: {
