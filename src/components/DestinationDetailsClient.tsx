@@ -15,6 +15,9 @@ import {
   Wallet,
 } from "lucide-react";
 import type { Destination } from "@/lib/api";
+import Image from "next/image";
+import EditDestinationDialog from "./EditDestinationDialog";
+import { Button } from "./ui/button";
 
 type Props = {
   destination: Destination;
@@ -46,20 +49,44 @@ export default function DestinationDetailsClient({
     <main className="min-h-screen bg-background px-4 py-8 sm:px-6 lg:py-12">
       <div className="mx-auto max-w-6xl">
         {/* Back navigation */}
-        <Link
+        {/* <Link
           href="/destinations"
           className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
           Back to destinations
-        </Link>
+        </Link> */}
+        
+<div className="mb-6 flex items-center justify-between gap-4">
+  <Link
+    href="/destinations"
+    className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
+  >
+    <ArrowLeft className="size-4" />
+    Back to destinations
+  </Link>
+
+  <div className="flex items-center gap-2">
+
+<EditDestinationDialog destination={destination}></EditDestinationDialog>
+     <Button
+        variant="outline"
+        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-300"
+      >
+        Delete
+      </Button>
+  </div>
+</div>
+
 
         {/* Main destination card */}
         <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
           {/* Destination image */}
           <div className="relative">
             {image ? (
-              <img
+              <Image
+              width={400}
+              height={400}
                 src={image}
                 alt={destination.destinationName}
                 className="h-64 w-full object-cover sm:h-80 lg:h-[440px]"

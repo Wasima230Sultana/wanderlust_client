@@ -6,8 +6,15 @@ const nextConfig: NextConfig = {
     agentFeedback: true,
   },
   images: {
-    // Destination image URLs are user-entered, so allow any https host.
-    remotePatterns: [{ protocol: "https", hostname: "**" }],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        // port: '',
+        // pathname: '/my-bucket/**',
+        // search: '',
+      },
+    ],
   },
   cacheComponents: false,
   partialPrefetching: false,
