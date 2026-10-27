@@ -18,6 +18,7 @@ import type { Destination } from "@/lib/api";
 import Image from "next/image";
 import EditDestinationDialog from "./EditDestinationDialog";
 import { Button } from "./ui/button";
+import DeleteDestinationDialog from "./DeleteDestinationDialog";
 
 type Props = {
   destination: Destination;
@@ -68,13 +69,16 @@ export default function DestinationDetailsClient({
 
   <div className="flex items-center gap-2">
 
-<EditDestinationDialog destination={destination}></EditDestinationDialog>
-     <Button
-        variant="outline"
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-300"
-      >
-        Delete
-      </Button>
+<EditDestinationDialog
+  destination={{
+    ...destination,
+    departureDate: destination.departureDate ?? "",
+  }}
+/>
+   <DeleteDestinationDialog destination={{
+    ...destination,
+    departureDate: destination.departureDate ?? "",
+  }}></DeleteDestinationDialog>
   </div>
 </div>
 
