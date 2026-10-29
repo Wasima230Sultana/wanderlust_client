@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 const categories = [
     "Beach",
@@ -54,6 +55,7 @@ export default function AddDestinationPage() {
     const [category, setCategory] = React.useState<string | null>(null);
     const [categoryError, setCategoryError] = React.useState(false);
     const [submitted, setSubmitted] = React.useState(false);
+    const router = useRouter();
 
     function resetFields() {
         formRef.current?.reset();
@@ -99,13 +101,17 @@ export default function AddDestinationPage() {
                 },
                 body: JSON.stringify(destinationData),
             });
+           
             console.log(destinationData)
             if (!res.ok) {
                 throw new Error("Failed to add destination");
             }
 
             resetFields();
+            
             setSubmitted(true);
+            router.push('/destinations')
+
         } catch (error) {
             console.error("Error adding destination:", error);
         }

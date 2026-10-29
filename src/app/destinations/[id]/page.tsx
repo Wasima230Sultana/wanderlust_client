@@ -1,6 +1,6 @@
 
 import { notFound } from "next/navigation";
-import DestinationDetailsClient from "@/components/DestinationDetailsClient";
+import DestinationDetailsClient from "@/components/destination/DestinationDetailsClient";
 import type { Destination } from "@/lib/api";
 
 type PageProps = {

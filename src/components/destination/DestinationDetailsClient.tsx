@@ -17,7 +17,6 @@ import {
 import type { Destination } from "@/lib/api";
 import Image from "next/image";
 import EditDestinationDialog from "./EditDestinationDialog";
-import { Button } from "./ui/button";
 import DeleteDestinationDialog from "./DeleteDestinationDialog";
 
 type Props = {

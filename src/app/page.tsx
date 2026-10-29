@@ -1,8 +1,8 @@
 
-import Banner from "@/components/Banner";
-import WhyChoose from "@/components/WhyChoose";
-import Testimonials from "@/components/Testimonials";
-import CtaBanner from "@/components/CtaBanner";
+import Banner from "@/components/home/Banner";
+import WhyChoose from "@/components/home/WhyChoose";
+import Testimonials from "@/components/home/Testimonials";
+import CtaBanner from "@/components/home/CtaBanner";
 
 
 export default function Home() {
