@@ -28,7 +28,7 @@ const navLinks = [
   { label: "Destinations", href: "/destinations" },
   { label: "Add Destinations", href: "/add-destination" },
   { label: "My Bookings", href: "/my-bookings" },
-  { label: "Admin", href: "/admin" },
+  // { label: "Admin", href: "/admin" },
 ];
 
 export default function Navbar() {

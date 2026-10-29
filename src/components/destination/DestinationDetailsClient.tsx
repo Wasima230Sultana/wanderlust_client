@@ -18,6 +18,7 @@ import type { Destination } from "@/lib/api";
 import Image from "next/image";
 import EditDestinationDialog from "./EditDestinationDialog";
 import DeleteDestinationDialog from "./DeleteDestinationDialog";
+import MyBookingCard from "../my-booking/MyBookingCard";
 
 type Props = {
   destination: Destination;
@@ -26,8 +27,8 @@ type Props = {
 export default function DestinationDetailsClient({
   destination,
 }: Props) {
-  const [saved, setSaved] = React.useState(false);
-  const [bookingOpen, setBookingOpen] = React.useState(false);
+      const [bookingOpen, setBookingOpen] = React.useState(false);
+        const [saved, setSaved] = React.useState(false);
 
   // Support imageUrl as either a string or an array of strings.
   const image = Array.isArray(destination.imageUrl)
@@ -46,16 +47,10 @@ export default function DestinationDetailsClient({
     : "Not specified";
 
   return (
+    
     <main className="min-h-screen bg-background px-4 py-8 sm:px-6 lg:py-12">
       <div className="mx-auto max-w-6xl">
         {/* Back navigation */}
-        {/* <Link
-          href="/destinations"
-          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" />
-          Back to destinations
-        </Link> */}
         
 <div className="mb-6 flex items-center justify-between gap-4">
   <Link
@@ -245,103 +240,7 @@ export default function DestinationDetailsClient({
             </section>
 
             {/* Price and booking card */}
-            <aside>
-              <div className="sticky top-6 rounded-2xl border border-border bg-background p-6 shadow-sm">
-                <p className="text-sm text-muted-foreground">
-                  Package price
-                </p>
-
-                <div className="mt-2 flex items-baseline gap-2">
-                  <span className="text-4xl font-bold tracking-tight">
-                    ${destination.priceUsd.toLocaleString("en-US")}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    / package
-                  </span>
-                </div>
-
-                <div className="my-6 border-t border-border" />
-
-                <div className="space-y-4 text-sm">
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="flex items-center gap-2 text-muted-foreground">
-                      <MapPin className="size-4" />
-                      Destination
-                    </span>
-                    <span className="text-right font-medium">
-                      {destination.destinationName}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="flex items-center gap-2 text-muted-foreground">
-                      <Clock className="size-4" />
-                      Duration
-                    </span>
-                    <span className="text-right font-medium">
-                      {destination.duration}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="flex items-center gap-2 text-muted-foreground">
-                      <CalendarDays className="size-4" />
-                      Departure
-                    </span>
-                    <span className="text-right font-medium">
-                      {departureDate}
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setBookingOpen((previous) => !previous)}
-                  className="mt-7 w-full rounded-xl bg-primary px-5 py-3.5 font-semibold text-primary-foreground transition hover:opacity-90"
-                >
-                  {bookingOpen ? "Close booking details" : "Book this package"}
-                </button>
-
-                {bookingOpen && (
-                  <div
-                    className="mt-4 rounded-xl border border-primary/30 bg-primary/5 p-4"
-                    role="status"
-                  >
-                    <h3 className="font-semibold">
-                      Booking inquiry
-                    </h3>
-
-                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                      You selected the {destination.destinationName} package
-                      for ${destination.priceUsd.toLocaleString("en-US")}.
-                      Contact your travel provider to confirm availability
-                      and complete your booking.
-                    </p>
-
-                    <p className="mt-3 text-xs text-muted-foreground">
-                      This demo does not create a reservation or process payments.
-                    </p>
-                  </div>
-                )}
-
-                <div className="mt-5 flex items-start gap-3 rounded-xl bg-muted/40 p-4">
-                  <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" />
-
-                  <p className="text-xs leading-5 text-muted-foreground">
-                    Review the departure date, package details, and final
-                    terms with your travel provider before booking.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setSaved((previous) => !previous)}
-                  className="mt-4 w-full rounded-xl border border-border px-5 py-3 text-sm font-medium transition hover:bg-muted"
-                >
-                  {saved ? "♥ Saved to favorites" : "♡ Save this destination"}
-                </button>
-              </div>
-            </aside>
+          <MyBookingCard destination={destination}></MyBookingCard>
           </div>
         </div>
 
