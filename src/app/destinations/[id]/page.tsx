@@ -12,10 +12,13 @@ export default async function DestinationDetailsPage({
   params,
 }: PageProps) {
   const { id } = await params;
- const token = await getTokenFromServer()
+
   let destination: Destination;
 
   try {
+     const token = await getTokenFromServer()
+     console.log("Token exists:", !!token);
+console.log("Token length:", token?.length);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/destinations/${id}`,
       {
