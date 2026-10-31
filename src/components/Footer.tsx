@@ -10,9 +10,9 @@ const quicklinks = [
 ];
 
 const support = [
-  { label: "Help Center", href: "/help" },
-  { label: "Terms of Service", href: "/terms" },
-  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Help Center" },
+  { label: "Terms of Service" },
+  { label: "Privacy Policy" },
 ];
 
 // lucide-react (v1.x in this repo) ships no brand icons — these are inline SVGs.
@@ -99,14 +99,13 @@ export default function Footer() {
           <div>
             <ColumnHeading>Support</ColumnHeading>
             <ul className="mt-3 space-y-2.5">
-              {support.map(({ label, href }) => (
-                <li key={label}>
-                  <Link
-                    href={href}
+              {support.map(({ label}) => (
+                <li key={label}
+                 
                     className="text-sm text-zinc-400 transition-colors hover:text-white"
                   >
                     {label}
-                  </Link>
+               
                 </li>
               ))}
             </ul>
