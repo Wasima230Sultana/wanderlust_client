@@ -85,25 +85,26 @@ export default function EditDestinationDialog({
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  React.useEffect(() => {
-    if (open) {
-      setCategory(destination.category);
-      setCategoryError(false);
-      setSuccess(false);
-      setError("");
-      formRef.current?.reset();
-    }
-  }, [open, destination]);
-
-  function handleCancel() {
-    formRef.current?.reset();
+function handleOpenChange(isOpen: boolean) {
+  if (isOpen) {
     setCategory(destination.category);
     setCategoryError(false);
     setSuccess(false);
     setError("");
-    setOpen(false);
+    formRef.current?.reset();
   }
 
+  setOpen(isOpen);
+}
+
+function handleCancel() {
+  formRef.current?.reset();
+  setCategory(destination.category);
+  setCategoryError(false);
+  setSuccess(false);
+  setError("");
+  setOpen(false);
+}
 
 async function handleSubmit(
   event: React.FormEvent<HTMLFormElement>
@@ -174,7 +175,7 @@ async function handleSubmit(
 
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger
         render={
           <Button
@@ -230,7 +231,7 @@ async function handleSubmit(
                 <Select
                   value={category}
                   onValueChange={(value) => {
-                    setCategory(value);
+                    setCategory(value as string);
                     setCategoryError(false);
                   }}
                 >
