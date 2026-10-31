@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 type Booking = {
     _id:string,
@@ -37,8 +38,12 @@ const router = useRouter()
 
 
   const handleBookingCancel=async()=>{
-    const res = await fetch(`http://localhost:8000/my-bookings/${booking._id}`,{
+    const token = await getTokenFromClient()
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-bookings/${booking._id}`,{
         method:'DELETE',
+         headers:{
+          authorization: `Bearer ${token}`
+        }
        
 
     })

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const categories = [
     "Beach",
@@ -56,7 +57,7 @@ export default function AddDestinationPage() {
     const [categoryError, setCategoryError] = React.useState(false);
     const [submitted, setSubmitted] = React.useState(false);
     const router = useRouter();
-
+   
     function resetFields() {
         formRef.current?.reset();
         setCategory(null);
@@ -71,7 +72,7 @@ export default function AddDestinationPage() {
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
+         const token  = await getTokenFromClient()
         // Validate category
         if (!category) {
             setCategoryError(true);
@@ -94,10 +95,11 @@ export default function AddDestinationPage() {
         };
 
         try {
-            const res = await fetch("http://localhost:8000/add-destination", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add-destination`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(destinationData),
             });

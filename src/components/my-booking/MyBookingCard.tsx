@@ -21,6 +21,7 @@ import { Form } from "@base-ui/react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { username } from "better-auth/plugins";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 type Props = {
     destination: Destination;
@@ -43,10 +44,12 @@ const handleBooking=async(e: React.SubmitEvent<HTMLElement>)=>{
         bookingDate : new Date()
     }
     console.log(data)
-    const res = await fetch('http://localhost:8000/my-booking',{
+  
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-booking`,{
         method:'POST',
         headers:{
             'Content-Type':'application/json'
+        
         },
         body:JSON.stringify(data)
     })

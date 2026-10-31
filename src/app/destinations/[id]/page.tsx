@@ -2,6 +2,7 @@
 import { notFound } from "next/navigation";
 import DestinationDetailsClient from "@/components/destination/DestinationDetailsClient";
 import type { Destination } from "@/lib/api";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -11,14 +12,17 @@ export default async function DestinationDetailsPage({
   params,
 }: PageProps) {
   const { id } = await params;
-
+ const token = await getTokenFromServer()
   let destination: Destination;
 
   try {
     const res = await fetch(
-      `http://localhost:8000/destinations/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/destinations/${id}`,
       {
         cache: "no-store",
+        headers:{
+          authorization: `Bearer ${token}`
+        }
       }
     );
 

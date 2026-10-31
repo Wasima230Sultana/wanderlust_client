@@ -1,9 +1,10 @@
 
-"use client";
 
-import { useEffect, useState } from "react";
+
 import BookingCard from "@/components/my-booking/BookingCard";
-import { authClient } from "@/lib/auth-client";
+import { auth } from "@/lib/auth";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
+import { headers } from "next/headers";
 
 type IBooking = {
   _id: string;
@@ -19,60 +20,22 @@ type IBooking = {
   imageUrl?: string;
 };
 
-export default function MyBookingPage() {
-  const { data: session, isPending } = authClient.useSession();
+ const MyBookingPage = async() => {
+  const session = await auth.api.getSession({
+    headers:await headers()
+  });
   const user = session?.user;
-
-  const [bookings, setBookings] = useState<IBooking[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (isPending) return;
-
-    if (!user?.email) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchBookings = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const res = await fetch(
-          `http://localhost:8000/my-bookings/${user.email}`
+  const token = await getTokenFromServer()
+   const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/my-bookings/${user?.email}`,{
+            headers:{
+              authorization:`Bearer ${token}`
+            }
+          }
+          
         );
+    const bookings:IBooking[] = await res.json();
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch bookings.");
-        }
-
-        const data = await res.json();
-        setBookings(Array.isArray(data) ? data : data.bookings ?? []);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Something went wrong."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBookings();
-  }, [user?.email, isPending]);
-
-  if (isPending || loading) {
-    return <p className="p-8 text-center">Loading bookings...</p>;
-  }
-
-  if (!user) {
-    return <p className="p-8 text-center">Please log in to view your bookings.</p>;
-  }
-
-  if (error) {
-    return <p className="p-8 text-center text-red-500">{error}</p>;
-  }
 
   return (
     <main className="min-h-screen bg-muted/30">
@@ -112,3 +75,4 @@ export default function MyBookingPage() {
     </main>
   );
 }
+export default MyBookingPage;

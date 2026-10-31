@@ -24,6 +24,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const categories = [
   "Beach",
@@ -103,67 +104,74 @@ export default function EditDestinationDialog({
     setOpen(false);
   }
 
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ) {
-    event.preventDefault();
 
-    if (!category) {
-      setCategoryError(true);
-      return;
-    }
+async function handleSubmit(
+  event: React.FormEvent<HTMLFormElement>
+) {
+  event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+  // Save the form before using await
+  const form = event.currentTarget;
 
-    const destinationData = {
-      destinationName: formData.get("destinationName"),
-      country: formData.get("country"),
-      category,
-      priceUsd: Number(formData.get("priceUsd")),
-      duration: formData.get("duration"),
-      departureDate: formData.get("departureDate"),
-      imageUrl: formData.get("imageUrl"),
-      description: formData.get("description"),
-    };
-
-    try {
-      setSubmitting(true);
-      setError("");
-      setSuccess(false);
-
-      const res = await fetch(
-        `http://localhost:8000/destinations/${destination._id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(destinationData),
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to update destination.");
-      }
-
-      setSuccess(true);
-
-      // Close the dialog after a successful update.
-      setOpen(false);
-
-      // Refresh the current page to show updated destination data.
-      window.location.reload();
-    } catch (err) {
-      console.error("Error updating destination:", err);
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Something went wrong. Please try again."
-      );
-    } finally {
-      setSubmitting(false);
-    }
+  if (!category) {
+    setCategoryError(true);
+    return;
   }
+
+  const formData = new FormData(form);
+
+  const destinationData = {
+    destinationName: formData.get("destinationName"),
+    country: formData.get("country"),
+    category,
+    priceUsd: Number(formData.get("priceUsd")),
+    duration: formData.get("duration"),
+    departureDate: formData.get("departureDate"),
+    imageUrl: formData.get("imageUrl"),
+    description: formData.get("description"),
+  };
+
+  try {
+    setSubmitting(true);
+    setError("");
+    setSuccess(false);
+
+    const token = await getTokenFromClient();
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/destinations/${destination._id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(destinationData),
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("Failed to update destination.");
+    }
+
+    setSuccess(true);
+    setOpen(false);
+
+    window.location.reload();
+
+  } catch (err) {
+    console.error("Error updating destination:", err);
+
+    setError(
+      err instanceof Error
+        ? err.message
+        : "Something went wrong. Please try again."
+    );
+  } finally {
+    setSubmitting(false);
+  }
+}
+
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

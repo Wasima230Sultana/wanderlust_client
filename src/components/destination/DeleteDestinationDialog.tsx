@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "../ui/button";
 import { redirect } from "next/navigation";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 type Destination = {
   _id: string;
   destinationName: string;
@@ -26,10 +27,12 @@ const DeleteDestinationDialog = ({destination}: {
   destination: Destination;
 }) => {
     const handleDeleteDestination = async()=>{
-        const res = await fetch( `http://localhost:8000/destinations/${destination._id}`,{
+      const token = await getTokenFromClient()
+        const res = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/destinations/${destination._id}`,{
             method:'DELETE',
             headers:{
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                authorization:`Bearer ${token}`
             },
          
         })
